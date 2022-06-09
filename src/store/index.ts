@@ -2,9 +2,16 @@ import { createStore } from "vuex";
 import axios from "axios";
 import { allNamesData } from "@/components/NamesData/NamesData";
 
-type Joke = {
+export type Joke = {
   joke: string;
-  flags: { [key: string]: boolean };
+  flags: {
+    nsfw: boolean;
+    religious: boolean;
+    political: boolean;
+    racist: boolean;
+    sexist: boolean;
+    explicit: boolean;
+  };
   id: number;
 };
 
@@ -23,7 +30,37 @@ export default createStore({
         allJokes: [] as Joke[],
         singleJoke: {} as SingleJoke,
       },
-      getters: {},
+      getters: {
+        // filterByFlag(state, flag) {
+        //   if (state.allJokes.flags.nsfw === flag) {
+        //     return state.allJokes.filter(
+        //       (eachJoke: Joke) => eachJoke.flags.nsfw
+        //     );
+        //   } else if (state.allJokes.flags.religious === flag) {
+        //     return state.allJokes.filter(
+        //       (eachJoke: Joke) => eachJoke.flags.religious
+        //     );
+        //   } else if (state.allJokes.flags.political === flag) {
+        //     return state.allJokes.filter(
+        //       (eachJoke: Joke) => eachJoke.flags.political
+        //     );
+        //   } else if (state.allJokes.flags.racist === flag) {
+        //     return state.allJokes.filter(
+        //       (eachJoke: Joke) => eachJoke.flags.racist
+        //     );
+        //   } else if (state.allJokes.flags.sexist === flag) {
+        //     return state.allJokes.filter(
+        //       (eachJoke: Joke) => eachJoke.flags.sexist
+        //     );
+        //   } else if (state.allJokes.flags.explicit === flag) {
+        //     return state.allJokes.filter(
+        //       (eachJoke: Joke) => eachJoke.flags.explicit
+        //     );
+        //   } else {
+        //     return state.allJokes;
+        //   }
+        // },
+      },
       mutations: {
         setJokes(state, jokesData) {
           state.allJokes = jokesData;
@@ -60,11 +97,12 @@ export default createStore({
       },
       getters: {},
       mutations: {
-        unpickedNamesMutation(state, payload) {
+        unpickedNamesMutation(state) {
           const newNames = [...state.allNames];
-          const deleteIndex = newNames.findIndex((name) => name.id === payload);
-          state.selectedName = newNames[deleteIndex].name;
-          newNames.splice(deleteIndex, 1);
+          const randomRange = state.allNames.length;
+          const randomIndex = Math.floor(Math.random() * randomRange);
+          state.selectedName = newNames[randomIndex].name;
+          newNames.splice(randomIndex, 1);
           state.allNames = newNames;
         },
         showAllMutation(state) {

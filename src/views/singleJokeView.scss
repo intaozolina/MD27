@@ -1,0 +1,33 @@
+.singleJoke__hero {
+  box-sizing: border-box;
+}
+
+.singleJoke__box {
+  margin: 70px 150px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  justify-content: space-between;
+  border: 1px dotted darkgray;
+  border-radius: 20px;
+  padding: 70px 100px;
+  background: linear-gradient(0deg, rgba(246,249,186,1) 1%, rgba(189,193,32,1) 100%);
+}
+
+.singleJoke__heading {
+  font-size: 24px;
+  font-weight: bold;
+  color: white;
+}
+
+.singleJoke__sub-heading {
+  font-size: 20px;
+  font-weight: bold;
+  color: white;
+}
+
+.singleJoke__paragraph {
+  font-size: 18px;
+  font-weight: bold;
+  color: #202f2f;
+}

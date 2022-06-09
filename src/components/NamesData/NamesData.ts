@@ -34,50 +34,46 @@ export const allNamesData = [
   },
   {
     id: 8,
-    name: "Roberts Lode",
-  },
-  {
-    id: 9,
     name: "Elvis Ketners",
   },
   {
-    id: 10,
+    id: 9,
     name: "Haralds",
   },
   {
-    id: 11,
+    id: 10,
     name: "Ieva Dīvāne",
   },
   {
-    id: 12,
+    id: 11,
     name: "Ilona K.",
   },
   {
-    id: 13,
+    id: 12,
     name: "Inta Ozolina",
   },
   {
-    id: 14,
+    id: 13,
     name: "Alberts Īvāns",
   },
   {
-    id: 15,
+    id: 14,
     name: "Arnis Toks",
   },
   {
-    id: 16,
+    id: 15,
     name: "Artis Vansovičs",
   },
   {
-    id: 17,
+    id: 16,
     name: "Artūrs Dancis",
   },
   {
-    id: 18,
+    id: 17,
     name: "Bogdans Zabela",
   },
   {
-    id: 19,
+    id: 18,
     name: "Edgars Kapilinskis",
   },
 ];
