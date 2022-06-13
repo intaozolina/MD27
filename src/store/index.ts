@@ -2,22 +2,18 @@ import { createStore } from "vuex";
 import axios from "axios";
 import { allNamesData } from "@/components/NamesData/NamesData";
 
-export type Joke = {
-  joke: string;
-  flags: {
-    nsfw: boolean;
-    religious: boolean;
-    political: boolean;
-    racist: boolean;
-    sexist: boolean;
-    explicit: boolean;
-  };
-  id: number;
+export type Flag = {
+  nsfw: boolean;
+  religious: boolean;
+  political: boolean;
+  racist: boolean;
+  sexist: boolean;
+  explicit: boolean;
 };
 
-type SingleJoke = {
+export type Joke = {
   joke: string;
-  flags: { [key: string]: boolean };
+  flags: Flag;
   id: number;
   category: string;
 };
@@ -28,7 +24,8 @@ export default createStore({
       namespaced: true,
       state: {
         allJokes: [] as Joke[],
-        singleJoke: {} as SingleJoke,
+        singleJoke: {} as Joke,
+        singleJokeFlags: [],
       },
       getters: {
         // filterByFlag(state, flag) {
@@ -68,22 +65,30 @@ export default createStore({
         setJokeById(state, singleJokeData) {
           state.singleJoke = singleJokeData;
         },
+        setJokeFlagsById(state, singleJokeFlagsData) {
+          state.singleJokeFlags = singleJokeFlagsData;
+        },
       },
       actions: {
-        loadJokes(context) {
+        loadJokes({ commit }, category) {
           axios
             .get(
-              "https://v2.jokeapi.dev/joke/Programming?type=single&amount=10,"
+              `https://v2.jokeapi.dev/joke/${category}?type=single&amount=10,`
             )
             .then((resp) => {
-              context.commit("setJokes", resp.data.jokes);
+              commit("setJokes", resp.data.jokes);
             });
         },
         loadJokeById(context, id) {
           axios
             .get(`https://v2.jokeapi.dev/joke/Any?idRange=${id}`)
             .then((resp) => {
+              console.log(Object.entries(resp.data.flags));
               context.commit("setJokeById", resp.data);
+              context.commit(
+                "setJokeFlagsById",
+                Object.entries(resp.data.flags)
+              );
             });
         },
       },

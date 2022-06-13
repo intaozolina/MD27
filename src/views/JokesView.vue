@@ -7,10 +7,21 @@
         </button>
       </div>
     </div>
+
+    <div class="filter__btn-box">
+      <div :key="index" v-for="(singleCategory, index) in categoryData">
+        <button class="filter__btn-btn" @click="loadJokes(singleCategory)">
+          {{ singleCategory }}
+        </button>
+      </div>
+    </div>
+
     <div class="joke__section">
       <div class="joke__box" :key="joke.id" v-for="joke in allJokes">
         <h1 class="joke__heading">Joke Nr. {{ joke.id }}</h1>
+        <h1 class="joke__heading">Joke Category is {{ joke.category }}</h1>
         <p class="joke__paragraph">{{ joke.joke }}</p>
+        <div>{{ joke.flags }}</div>
         <router-link :to="`/jokes/${joke.id}`">
           <button class="joke__btn">See more</button>
         </router-link>
@@ -25,52 +36,41 @@ import { mapActions, mapMutations, mapState } from "vuex";
 import "../components/Reset/styleReset.css";
 import "./jokeView.scss";
 
+type Flag =
+  | "nsfw"
+  | "religious"
+  | "political"
+  | "racist"
+  | "sexist"
+  | "explicit";
+
 export default defineComponent({
   name: "JokesView",
-  data: () => ({
-    flagsData: [
-      "nsfw",
-      "religious",
-      "political",
-      "racist",
-      "sexist",
-      "explicit",
-    ],
-  }),
+  data: () => ({}),
   mounted() {
-    this.loadJokes();
+    this.loadJokes("Any");
   },
   computed: {
     ...mapState("jokesModule", ["allJokes"]),
+    flagsData() {
+      return ["nsfw", "religious", "political", "racist", "sexist", "explicit"];
+    },
+    categoryData() {
+      return ["Any", "Misc", "Programming", "Dark", "Pun"];
+    },
     // ...mapGetters("jokesModule", ["filterByFlag()"]),
   },
   methods: {
-    ...mapActions("jokesModule", ["loadJokes", "loadJokeByFlag"]),
-    ...mapMutations("jokesModule", [
-      "setJokes",
-      "setJokeById",
-      "setJokesByFlag",
-    ]),
-    flagFilter(flag: string) {
-      if (this.allJokes.flags.nsfw === flag) {
-        return this.allJokes.filter((eachJoke: any) => eachJoke.flags.nsfw);
-      } else if (this.allJokes.flags.religious === flag) {
-        return this.allJokes.filter(
-          (eachJoke: any) => eachJoke.flags.religious
-        );
-      } else if (this.allJokes.flags.political === flag) {
-        return this.allJokes.filter(
-          (eachJoke: any) => eachJoke.flags.political
-        );
-      } else if (this.allJokes.flags.racist === flag) {
-        return this.allJokes.filter((eachJoke: any) => eachJoke.flags.racist);
-      } else if (this.allJokes.flags.sexist === flag) {
-        return this.allJokes.filter((eachJoke: any) => eachJoke.flags.sexist);
-      } else if (this.allJokes.flags.explicit === flag) {
-        return this.allJokes.filter((eachJoke: any) => eachJoke.flags.explicit);
-      } else {
-        return this.allJokes;
-      }
+    ...mapActions("jokesModule", ["loadJokes"]),
+    ...mapMutations("jokesModule", ["setJokes"]),
+    flagFilter(flag: Flag) {
+      this.allJokes.filter((joke: any) => {
+        Object.entries(joke.flags).map((eachFlag) => {
+          if (eachFlag[0] === flag && eachFlag[1] === true) {
+            return joke;
+          }
+        });
+      });
     },
   },
 });

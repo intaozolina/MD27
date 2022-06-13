@@ -7,6 +7,13 @@
       </h3>
       <h5 class="singleJoke__sub-heading">Joke</h5>
       <p class="singleJoke__paragraph">{{ singleJoke.joke }}</p>
+      <div
+        class="singleJoke__flag-box"
+        :key="index"
+        v-for="(flag, index) in singleJokeFlags"
+      >
+        <p class="singleJoke__paragraph">{{ flag[0] }} : {{ flag[1] }}</p>
+      </div>
     </div>
   </div>
 </template>
@@ -24,7 +31,7 @@ export default defineComponent({
   },
 
   computed: {
-    ...mapState("jokesModule", ["singleJoke"]),
+    ...mapState("jokesModule", ["singleJoke", "singleJokeFlags"]),
   },
 
   methods: {
